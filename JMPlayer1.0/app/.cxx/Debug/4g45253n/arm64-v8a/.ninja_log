@@ -1,0 +1,9 @@
+# ninja log v5
+7	1901	7337702868650691	CMakeFiles/JMPlayer.dir/JMPlayer.cpp.o	ec0bb69098533f29
+61	1931	7337702868989783	CMakeFiles/JMPlayer.dir/native-lib.cpp.o	fc2aeefe5945b7ca
+1931	2270	7337702872308072	D:/video/codec/JMPlayer/app/build/intermediates/cxx/Debug/4g45253n/obj/arm64-v8a/libJMPlayer.so	3f6ab597aa6decfa
+50	352	7337702852905431	CMakeFiles/JMPlayer.dir/JMLog.cpp.o	945de54562efe6a
+10	158	7338327206970780	CMakeFiles/JMPlayer.dir/JMLog.cpp.o	d18d2a58c124d7ee
+4	874	7338327214490693	CMakeFiles/JMPlayer.dir/JMPlayer.cpp.o	4d8ec8703b19acbf
+15	888	7338327214580421	CMakeFiles/JMPlayer.dir/native-lib.cpp.o	3b813d6af43f6037
+889	1140	7338327216993924	D:/video/codec/JMPlayer/app/build/intermediates/cxx/Debug/4g45253n/obj/arm64-v8a/libJMPlayer.so	3f6ab597aa6decfa

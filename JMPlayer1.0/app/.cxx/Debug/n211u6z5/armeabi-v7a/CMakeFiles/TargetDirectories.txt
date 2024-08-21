@@ -1,0 +1,3 @@
+D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a/CMakeFiles/JMPlayer.dir
+D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

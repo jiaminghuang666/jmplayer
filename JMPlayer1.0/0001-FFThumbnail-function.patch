@@ -1,0 +1,499 @@
+From 727d532908a114841b46f846b5889381150e5f36 Mon Sep 17 00:00:00 2001
+From: Jiaming Huang <jiaming.huang666@outlook.com>
+Date: Wed, 21 Aug 2024 17:17:06 +0800
+Subject: [PATCH] FFThumbnail function
+
+---
+ app/src/main/cpp/CMakeLists.txt               |   2 +
+ app/src/main/cpp/FFThumbnail.cpp              | 148 +++++++++++
+ app/src/main/cpp/FFThumbnail.h                |  43 +++
+ .../java/com/example/JMPlayer/JMPlayer.java   |   1 -
+ jiaming.patch                                 | 245 ++++++++++++++++++
+ 5 files changed, 438 insertions(+), 1 deletion(-)
+ create mode 100644 app/src/main/cpp/FFThumbnail.cpp
+ create mode 100644 app/src/main/cpp/FFThumbnail.h
+ create mode 100644 jiaming.patch
+
+diff --git a/app/src/main/cpp/CMakeLists.txt b/app/src/main/cpp/CMakeLists.txt
+index 4e92a34..89209ed 100644
+--- a/app/src/main/cpp/CMakeLists.txt
++++ b/app/src/main/cpp/CMakeLists.txt
+@@ -46,6 +46,8 @@ add_library( # Sets the name of the library.
+              SHARED
+ 
+              # Provides a relative path to your source file(s).
++             FFThumbnail.cpp
++
+              XParameter.cpp
+              XData.cpp
+              JMObserver.cpp
+diff --git a/app/src/main/cpp/FFThumbnail.cpp b/app/src/main/cpp/FFThumbnail.cpp
+new file mode 100644
+index 0000000..0faf47e
+--- /dev/null
++++ b/app/src/main/cpp/FFThumbnail.cpp
+@@ -0,0 +1,148 @@
++//
++// Created by jiaming.huang on 2024/5/24.
++//
++
++#include "FFThumbnail.h"
++#include "JMLog.h"
++
++int FFThumbnail::Open(const char *url)
++{
++    int ret = 0 ;
++
++    av_register_all();
++    avformat_network_init();
++    avcodec_register_all();
++
++    ret = avformat_open_input(&fmt_ctx, url, 0, 0);  // 打开输入文件
++    if (ret) {
++        ALOGE("FFThumbnail::Open avformat_open_input fail ret = %d ", ret);
++        return -1;
++         //goto err0;
++    }
++
++    ret = avformat_find_stream_info(fmt_ctx, NULL);  // 获取流信息
++    if (ret) {
++        ALOGE("FFThumbnail::Open avformat_find_stream_info fail ret = %d ", ret);
++        goto err0;
++        //return -1 ;
++    }
++
++    video_stream_index = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL,0);
++    if (video_stream_index) {
++        ALOGE("FFThumbnail::Open av_find_best_stream fail ret = %d ", video_stream_index);
++        goto err0;
++    }
++
++    videoPara = fmt_ctx->streams[video_stream_index]->codecpar;
++
++    codec = avcodec_find_decoder(videoPara->codec_id);  // 找到解码器并打开
++    if (!codec) {
++        ALOGE("FFThumbnail::Open avcodec_find_decoder NULL codec ");
++        goto err0;
++    }
++
++    //初始化解码器
++    VideoCodecCtx  = avcodec_alloc_context3(codec);
++    avcodec_parameters_to_context(VideoCodecCtx, videoPara);
++
++    ret = avcodec_open2(VideoCodecCtx, 0, 0);
++    if (ret) {
++        ALOGE("FFThumbnail::Open avcodec_open2 fail ret = %d ", ret);
++        goto err0;
++    }
++
++
++    frame = av_frame_alloc();  // 分配帧
++    if (!frame) {
++        ALOGE("FFThumbnail::Open av_frame_alloc fail ret = %d ", ret);
++        goto err2;
++    }
++
++    //读取第一帧
++    while(av_read_frame(fmt_ctx, packet)) {
++        if (packet->stream_index == video_stream_index) {
++            avcodec_send_packet(VideoCodecCtx, packet);
++            while (avcodec_receive_frame(VideoCodecCtx, frame) == 0 ) {
++                break;
++            }
++            av_packet_unref(packet);
++            break;
++        }
++        av_packet_unref(packet);
++    }
++
++    //缩放帧
++    /*struct SwsContext *sws_ctx = sws_getContext(
++            vc->width,
++            vc->height,
++            vc->pix_fmt,
++            640,
++            480,
++            AV_PIX_FMT_YUV420P,
++            SWS_BILINEAR,
++            NULL,
++            NULL,
++            NULL
++            );
++
++    Scale_frame = av_frame_alloc();
++    if (!Scale_frame) {
++        ALOGE("FFThumbnail::OpenScale_frame av_frame_alloc fail ret = %d ", ret);
++        goto error3;
++    }
++    Scale_frame->width = 640;
++    Scale_frame->height = 480;
++    Scale_frame->format = AV_PIX_FMT_YUV420P;
++
++    uint8_t *scaled_frame_buffer[1];
++    int Scale_frame_size = av_image_alloc(scaled_frame_buffer, NULL,
++                                          Scale_frame->width,
++                                          Scale_frame->height,
++                                          Scale_frame->format,
++                                          16);
++    if (Scale_frame_size) {
++        ALOGE("FFThumbnail::OpenScale_frame Scale_frame_size fail ret = %d ", ret);
++        goto error3;
++    }
++    av_frame_unref(Scale_frame);
++    av_frame_move_ref(Scale_frame, frame);
++
++    // 执行缩放
++    sws_scale(sws_ctx,
++              (const uint8_t * const *)frame->data,
++              frame->linesize,
++              0,
++              vc->height,
++              Scale_frame->data,
++              Scale_frame->linesize);*/
++
++
++   // return ret;
++
++
++
++return 0;
++
++
++//err3:
++    //   sws_freeContext(sws_ctx);
++//error2:
++//    av_frame_free(Scale_frame);
++
++err2:
++    av_frame_free(&frame);
++err1:
++    avcodec_close(VideoCodecCtx);
++err0:
++    avformat_close_input(&fmt_ctx);
++
++    return -1;
++}
++
++
++void FFThumbnail::Close()
++{
++//    av_frame_free(Scale_frame);
++    av_frame_free(&frame);
++    avformat_close_input(&fmt_ctx);
++}
+\ No newline at end of file
+diff --git a/app/src/main/cpp/FFThumbnail.h b/app/src/main/cpp/FFThumbnail.h
+new file mode 100644
+index 0000000..e341dfd
+--- /dev/null
++++ b/app/src/main/cpp/FFThumbnail.h
+@@ -0,0 +1,43 @@
++
++// Created by jiaming.huang on 2024/5/24.
++//
++
++#ifndef JMPLAYER_FFTHUMBNAIL_H
++#define JMPLAYER_FFTHUMBNAIL_H
++
++extern "C" {
++#include <libavcodec/avcodec.h>
++#include <libavformat/avformat.h>
++#include <libswscale/swscale.h>
++#include <libswresample/swresample.h>
++};
++
++struct AVFormatContext ;
++struct AVCodecContext ;
++struct AVCodecParameters;
++struct AVFrame ;
++struct AVPacket;
++struct AVCodec;
++
++class FFThumbnail {
++
++public:
++    int Open(const char *url);
++    void Close();
++
++
++private:
++
++    AVFormatContext *fmt_ctx = 0;
++    AVCodecContext *VideoCodecCtx = 0;
++    AVCodecParameters *videoPara = 0;
++    AVFrame *frame = 0;
++    AVFrame *Scale_frame = 0;
++    AVPacket *packet = 0;
++    AVCodec *codec = 0;
++    int video_stream_index = -1;
++
++};
++
++
++#endif //JMPLAYER_FFTHUMBNAIL_H
+diff --git a/app/src/main/java/com/example/JMPlayer/JMPlayer.java b/app/src/main/java/com/example/JMPlayer/JMPlayer.java
+index d14a393..e1fedb7 100644
+--- a/app/src/main/java/com/example/JMPlayer/JMPlayer.java
++++ b/app/src/main/java/com/example/JMPlayer/JMPlayer.java
+@@ -103,7 +103,6 @@ public class JMPlayer extends GLSurfaceView implements Runnable,SurfaceHolder.Ca
+     public native int getVideoWidth();
+     public native int getVideoHeight();
+ 
+-
+     public native boolean testjni(String url, Object handle);
+ 
+ }
+diff --git a/jiaming.patch b/jiaming.patch
+new file mode 100644
+index 0000000..dad6929
+--- /dev/null
++++ b/jiaming.patch
+@@ -0,0 +1,245 @@
++diff --git a/app/src/main/cpp/JMPlayer.cpp b/app/src/main/cpp/JMPlayer.cpp
++index 1001fb7..dc534b1 100644
++--- a/app/src/main/cpp/JMPlayer.cpp
+++++ b/app/src/main/cpp/JMPlayer.cpp
++@@ -62,19 +62,26 @@ JMPlayer *JMPlayer::Get(unsigned char index)
++ 
++ int JMPlayer::getMsg(AVMessage *msg)
++ {
++-    ALOGD("JMPlayer::getMsg ");
++-    mux.lock();
+++    ALOGD("JMPlayer::getMsg enter");
+++    std::unique_lock<std::mutex> lck(thread_mux);
+++    cond.wait(lck);
+++
+++    ALOGD("JMPlayer::getMsg enter 2");
++     msg_queue_get(&node, msg);
++-    mux.unlock();
+++    ALOGD("JMPlayer::getMsg exit");
+++
++     return 0;
++ }
++ 
++ 
++ int JMPlayer::setMsg(int what, int arg1,int arg2)
++ {
++-    mux.lock();
+++   // mux.lock();
+++    ALOGD("JMPlayer::setMsg enter");
++     msg_queue_put_simple(&node,  what, arg1, arg2);
++-    mux.unlock();
+++    cond.notify_one();
+++    //mux.unlock();
+++    ALOGD("JMPlayer::setMsg exit");
++ 
++     return 0;
++ }
++@@ -97,6 +104,18 @@ int JMPlayer::PlayerBuilder(int (*msg_loop)(void*), JMPlayer *player)
++ 
++     ALOGD("Jmplayer  PlayerBuilder enter");
++ 
+++    Node * node = CreateList();
+++    AVMessage *data;
+++    AVMessage *msg;
+++    data->what = 200;
+++    data->arg1 = 1;
+++    data->arg2 = 2;
+++    ALOGD("Jmplayer  PlayerBuilder enter:1 ");
+++    msg_queue_put_private(&node, data);
+++    ALOGD("Jmplayer  PlayerBuilder enter:0 ");
+++    msg_queue_get(&node, msg);
+++    ALOGD("Jmplayer  PlayerBuilder enter:%d %d %d ",msg->what,msg->arg1,msg->arg2);
+++
++     player->msg_loop = msg_loop;
++     std::thread JmPlayerThread(jmplayer_msg_loop, player);
++     JmPlayerThread.detach();
++@@ -389,5 +408,7 @@ int JMPlayer::getVideoWidth()
++     }
++     mux.unlock();
++ 
+++    setMsg(100, 1,1);
+++
++     return Width;
++ }
++\ No newline at end of file
++diff --git a/app/src/main/cpp/XMsgQueue.h b/app/src/main/cpp/XMsgQueue.h
++index 2606e00..70a4f66 100644
++--- a/app/src/main/cpp/XMsgQueue.h
+++++ b/app/src/main/cpp/XMsgQueue.h
++@@ -16,18 +16,24 @@ typedef  struct  AVMessage {
++     int what;
++     int arg1;
++     int arg2;
++-    struct AVMessage *next;
+++    //struct AVMessage *next;
++ 
++ }AVMessage;
++ 
++ typedef  struct Node {
++     AVMessage *data;
++-    struct Node * next;
+++    struct Node *next;
++ } Node;
++ 
++-inline static int msg_init_msg(AVMessage *data)
+++inline static void msg_init_msg(AVMessage *data)
++ {
++     memset(data, 0,sizeof(AVMessage));
+++    return;
+++}
+++
+++inline Node * CreateList()
+++{
+++    return NULL;
++ }
++ 
++ inline static Node* CreateNode(AVMessage *data)
++@@ -39,6 +45,7 @@ inline static Node* CreateNode(AVMessage *data)
++     }
++ 
++     newNode->data = data;
+++    ALOGD("CreateNode enter what:%d arg1:%d arg2:%d !!\n",newNode->data->what, newNode->data->arg1, newNode->data->arg2);
++     newNode->next = NULL;
++ 
++     return newNode;
++@@ -46,10 +53,12 @@ inline static Node* CreateNode(AVMessage *data)
++ 
++ inline static int msg_queue_put_private(Node ** head, AVMessage *data)
++ {
+++    ALOGE("msg_queue_put_private enter 1 !!\n");
++     Node * newNode = CreateNode(data);
++-    if (!*head) {
+++    if (*head == NULL) {
+++        ALOGE("msg_queue_put_private is head Node  !!\n");
++         *head = newNode;
++-        return -1;
+++        return 0;
++     }
++ 
++     Node *temp = *head;
++@@ -57,15 +66,16 @@ inline static int msg_queue_put_private(Node ** head, AVMessage *data)
++         temp = temp->next;
++     }
++     temp->next = newNode;
+++    ALOGE("msg_queue_put_private enter 2 !!\n");
++ 
++     return 0;
++ }
++ 
++ inline static int msg_queue_put(Node ** head, AVMessage *data)
++ {
++-    mux.lock();
+++    //mux.lock();
++     msg_queue_put_private( head, data);
++-    mux.unlock();
+++    //mux.unlock();
++ 
++     return 0;
++ }
++@@ -74,29 +84,42 @@ inline static int msg_queue_put_simple(Node ** head, int what, int arg1,int arg2
++ {
++     AVMessage msg;
++     msg_init_msg(&msg);
+++
++     msg.what = what;
++     msg.arg1 = arg1;
++     msg.arg2 = arg2;
+++    ALOGD("msg_queue_put_simple enter what:%d arg1:%d arg2:%d !!\n",msg.what, msg.arg1, msg.arg2);
++     msg_queue_put(head, &msg);
+++
+++    return 0;
++ }
++ 
++ inline static int msg_queue_get(Node ** head, AVMessage *data)
++ {
++-    mux.lock();
+++   // mux.lock();
++     ALOGE("msg_queue_get enter !!\n");
++     if (*head == NULL) {
++-        mux.unlock();
+++        //mux.unlock();
++         ALOGE("msg_queue_get is fail !!\n");
++-        return -1;
+++        return 0;
++     }
++ 
++     data = (*head)->data;
+++    ALOGD("msg_queue_get enter  1 what:%d arg1:%d arg2:%d !!\n",(*head)->data->what, (*head)->data->arg1, (*head)->data->arg2);
+++    ALOGD("msg_queue_get enter what:%d arg1:%d arg2:%d !!\n",data->what, data->arg1, data->arg2);
+++
+++    Node* current = *head;
+++    while (current != NULL) {
+++        ALOGD("msg_queue_get: %d \n", current->data->what);
+++        current = current->next;
+++    }
++ 
++     Node *temp = *head;
++     *head = (*head)->next;
+++
++     free(temp);
++ 
++-    mux.unlock();
+++    //mux.unlock();
++ 
++     return 0;
++ }
++diff --git a/app/src/main/cpp/jmplayer.h b/app/src/main/cpp/jmplayer.h
++index 7c045f9..faba702 100644
++--- a/app/src/main/cpp/jmplayer.h
+++++ b/app/src/main/cpp/jmplayer.h
++@@ -55,7 +55,9 @@ private:
++ 
++ 
++     AVMessage *msg;
++-    Node *node = NULL;
+++    Node *node ;
+++    std::condition_variable cond;
+++    std::mutex thread_mux;
++ 
++ protected:
++     void Main();
++diff --git a/app/src/main/cpp/native-lib.cpp b/app/src/main/cpp/native-lib.cpp
++index c2e0e03..f65c6cc 100644
++--- a/app/src/main/cpp/native-lib.cpp
+++++ b/app/src/main/cpp/native-lib.cpp
++@@ -71,9 +71,12 @@ inline static void post_event(JNIEnv *env, jobject thiz,int what, int arg1, int
++ #define MSG_COMPLETED                   300
++ #define MSG_VIDEO_SIZE_CHANGED          400
++ 
+++#define MSG_STOP_MESSAGE_THREAD         1000
+++
++ static void message_loop_n(JNIEnv *env)
++ {
++     ALOGD("jiaming jni message_loop_n  \n");
+++    bool exit_thread = false;
++     while(1) {
++         AVMessage msg;
++         int retval = JMPlayerPorxy::Get()->getMsg(&msg);
++@@ -84,6 +87,7 @@ static void message_loop_n(JNIEnv *env)
++ 
++         switch (msg.what) {
++             case MSG_ERROR:
+++                ALOGE("jiaming jni message_loop_n MSG_ERROR \n");
++                 post_event(env, mythiz,msg.what, msg.arg1, msg.arg2);
++                 break;
++ 
++@@ -95,12 +99,18 @@ static void message_loop_n(JNIEnv *env)
++                 //post_event(JNIEnv *env, jobject thiz,int what, int arg1, int arg2)
++                 break;
++ 
+++            case MSG_STOP_MESSAGE_THREAD:
+++                exit_thread = true;
+++                break;
+++
++             default:
++                 ALOGE("unknown MSG_xxx(%d)\n", msg.what);
++                 break;
++         }
++ 
++-        usleep(1000000);
+++        usleep(100);
+++        if (exit_thread)
+++            break;
++     }
++ }
++ 
+-- 
+2.24.0.windows.2
+

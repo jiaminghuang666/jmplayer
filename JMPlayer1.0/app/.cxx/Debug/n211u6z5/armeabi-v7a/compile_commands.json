@@ -1,0 +1,17 @@
+[
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -std=c++11 -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMLog.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -std=c++11 -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMPlayer.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/n211u6z5/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -std=c++11 -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\native-lib.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp"
+}
+]

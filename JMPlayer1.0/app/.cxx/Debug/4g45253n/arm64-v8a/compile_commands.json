@@ -1,0 +1,17 @@
+[
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/arm64-v8a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMLog.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/arm64-v8a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMPlayer.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/arm64-v8a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\native-lib.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp"
+}
+]

@@ -1,0 +1,117 @@
+[
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\FFThumbnail.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFThumbnail.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFThumbnail.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XParameter.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XParameter.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XParameter.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XData.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XData.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XData.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMObserver.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMObserver.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMObserver.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XThread.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XThread.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XThread.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMAudioPlay.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMAudioPlay.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMAudioPlay.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\SLAudioPlay.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\SLAudioPlay.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\SLAudioPlay.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XEGL.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XEGL.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XEGL.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMVideoView.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMVideoView.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMVideoView.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\GLVideoView.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\GLVideoView.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\GLVideoView.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XTexture.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XTexture.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XTexture.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\XShader.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XShader.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\XShader.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\TestOpenglEgl.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\TestOpenglEgl.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\TestOpenglEgl.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMResample.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMResample.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMResample.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\FFResample.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFResample.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFResample.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\FFDecode.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFDecode.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFDecode.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMDecode.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMDecode.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMDecode.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\FFDemux.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFDemux.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\FFDemux.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMDemux.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMDemux.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMDemux.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMLog.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMLog.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMPlayerPorxy.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayerPorxy.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayerPorxy.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\JMPlayer.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\JMPlayer.cpp"
+},
+{
+  "directory": "D:/video/codec/JMPlayer/app/.cxx/Debug/4g45253n/armeabi-v7a",
+  "command": "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi31 --sysroot=E:/android-studio/android_sdk_ndk_cmake/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/sysroot -DJMPlayer_EXPORTS -ID:/video/codec/JMPlayer/app/src/main/cpp/include -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -fexceptions -frtti -stdlib=libc++ -g  -fno-limit-debug-info -fPIC -o CMakeFiles\\JMPlayer.dir\\native-lib.cpp.o -c D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp",
+  "file": "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\native-lib.cpp"
+}
+]

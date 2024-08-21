@@ -1,0 +1,29 @@
+{
+  "buildFiles": [
+    "D:\\video\\codec\\JMPlayer\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "D:\\video\\codec\\JMPlayer\\app\\.cxx\\Debug\\4g45253n\\arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "D:\\video\\codec\\JMPlayer\\app\\.cxx\\Debug\\4g45253n\\arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "JMPlayer::@6890427a1f51a3e7e1df": {
+      "artifactName": "JMPlayer",
+      "abi": "arm64-v8a",
+      "output": "D:\\video\\codec\\JMPlayer\\app\\build\\intermediates\\cxx\\Debug\\4g45253n\\obj\\arm64-v8a\\libJMPlayer.so",
+      "runtimeFiles": [
+        "E:\\android-studio\\android_sdk_ndk_cmake\\sdk\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\31\\liblog.so"
+      ]
+    }
+  }
+}
