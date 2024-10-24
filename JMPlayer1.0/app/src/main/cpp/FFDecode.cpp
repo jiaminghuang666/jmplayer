@@ -171,17 +171,18 @@ XData FFDecode::receiveFrame()
     XData frameData;
     frameData.data = (unsigned char *) frame;
     if (cc->codec_type == AVMEDIA_TYPE_VIDEO) {
-        ALOGD("avcodec_receive_frame decode video pts = %lld",frame->pts);
+        frameData.videoFramecount++;
         frameData.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
         frameData.width = frame->width;
         frameData.height = frame->height;
 
         this->outWidth = frame->width;
         this->outHeight = frame->height;
-
+        ALOGD("avcodec_receive_frame decode video Framecount=%lld pts = %lld",frameData.videoFramecount,frame->pts);
     } else {
-        ALOGD("avcodec_receive_frame decode audio pts = %lld",frame->pts);
+        frameData.audioFramecount++;
         frameData.size =av_get_bytes_per_sample((AVSampleFormat)frame->format ) * frame->nb_samples * 2;
+        ALOGD("avcodec_receive_frame decode audio Framecount=%lld pts = %lld",frameData.audioFramecount,frame->pts);
     }
 
     frameData.format = frame->format;

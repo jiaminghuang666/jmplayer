@@ -5,10 +5,6 @@
 #ifndef JMPLAYER_JMLOG_H
 #define JMPLAYER_JMLOG_H
 
-class JMLog {
-
-};
-
 #ifdef ANDROID
 #include <android/log.h>
 #define ALOGD(...) __android_log_print(ANDROID_LOG_DEBUG,"jiaming",__VA_ARGS__)

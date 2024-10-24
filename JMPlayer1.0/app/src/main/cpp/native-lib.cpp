@@ -9,7 +9,7 @@
 #include "JMPlayerPorxy.h"
 #include "JMLog.h"
 
-#include "TestOpenglEgl.h"
+#include "test/TestOpenglEgl.h"
 #include <unistd.h>
 
 

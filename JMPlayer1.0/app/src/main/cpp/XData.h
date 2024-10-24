@@ -22,6 +22,8 @@ struct XData {
      int format = 0;
      int size = 0;
      bool isAudio = false;
+     long int videoFramecount = 0;
+     long int audioFramecount = 0;
      bool Alloc(int size, const char *data = 0);
      void Drop();
 };

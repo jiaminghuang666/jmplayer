@@ -46,14 +46,14 @@ void JMDecode::Main()
         }
         packsMutex.lock();
 
-        if(!isAudio && synPts > 0) {
+        /*if(!isAudio && synPts > 0) {
             //ALOGD("JMDecode::Main synPts=%d pts=%d ",synPts,pts);
             if(synPts < pts ){
                 packsMutex.unlock();
                 XSleep(1);
                 continue;
             }
-        }
+        }*/
 
         if (packs.empty()) {
             packsMutex.unlock();
@@ -75,6 +75,7 @@ void JMDecode::Main()
                 //ALOGD("JMDecode::Main pts=%d frame.pts=%d \n",pts,frame.pts);
                 //ALOGD("receiveFrame frame size: %d", frame.size);
                 this->Notify(frame);
+                
             }
         }
 

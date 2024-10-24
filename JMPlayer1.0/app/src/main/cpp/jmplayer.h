@@ -44,6 +44,11 @@ public:
     //virtual int jmplayer_msg_loop(void *arg);
     int (*msg_loop)(void *);
 
+
+
+    void VideoDisplay(double * remainTime);
+
+
 private:
     JMDemux *myDemux = NULL;
     JMDecode *vdecode = NULL;

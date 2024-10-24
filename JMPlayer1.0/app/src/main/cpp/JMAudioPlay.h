@@ -8,6 +8,7 @@
 #include "JMObserver.h"
 #include "XParameter.h"
 
+#include <mutex>
 #include <list>
 
 class JMAudioPlay:public JMObserver {
@@ -25,5 +26,19 @@ protected:
     std::list <XData> frames;
 };
 
+class SLAudioPlay :public JMAudioPlay {
+public:
+    virtual bool StartPlay(XParameter out);
+    virtual void Close();
+    void PlayCall(void *bufq);
+
+    SLAudioPlay();
+    virtual ~SLAudioPlay();
+
+protected:
+    unsigned  char *buf = 0;
+
+    std::mutex mux;
+};
 
 #endif //JMPLAYER_JMAUDIOPLAY_H

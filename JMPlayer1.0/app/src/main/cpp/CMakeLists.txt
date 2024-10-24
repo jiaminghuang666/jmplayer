@@ -50,26 +50,20 @@ add_library( # Sets the name of the library.
              XData.cpp
              JMObserver.cpp
              XThread.cpp
-             JMAudioPlay.cpp
-             SLAudioPlay.cpp
              XEGL.cpp
-             JMVideoView.cpp
-             GLVideoView.cpp
              XTexture.cpp
              XShader.cpp
-             TestOpenglEgl.cpp
+             JMVideoView.cpp
+             JMAudioPlay.cpp
              JMResample.cpp
              FFResample.cpp
              FFDecode.cpp
              JMDecode.cpp
              FFDemux.cpp
              JMDemux.cpp
-             JMLog.cpp
              JMPlayerPorxy.cpp
              JMPlayer.cpp
              native-lib.cpp
-
-
         )
 
 # Searches for a specified prebuilt library and stores the path as a

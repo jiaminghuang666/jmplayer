@@ -26,12 +26,11 @@
 
 #include "XThread.h"
 #include "JMObserver.h"
-#include "GLVideoView.h"
+
+#include "JMVideoView.h"
 
 #include "FFResample.h"
-#include "SLAudioPlay.h"
-
-
+#include "JMAudioPlay.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -101,8 +100,6 @@ int JMPlayer::PlayerBuilder(int (*msg_loop)(void*), JMPlayer *player)
     std::thread JmPlayerThread(jmplayer_msg_loop, player);
     JmPlayerThread.detach();
 
-    ALOGD("Jmplayer  PlayerBuilder enter 1");
-
     myDemux = new FFDemux();  //解封装
     vdecode = new FFDecode(); //视频解码
     adecode = new FFDecode(); //音频解码
@@ -120,14 +117,14 @@ int JMPlayer::PlayerBuilder(int (*msg_loop)(void*), JMPlayer *player)
     resample->AddObs(audioPlay);
 
     ALOGD("Jmplayer  PlayerBuilder exit");
-
-    ALOGD("Jmplayer  PlayerBuilder exit 2");
     return ret;
 }
 
 
 void JMPlayer::Main()
 {
+   double remainTime = 0.0;
+
     while (!isExit) {
         mux.lock();
         if(!audioPlay || !vdecode) {
@@ -137,15 +134,23 @@ void JMPlayer::Main()
             continue;
         }
 
-        //同步
-        //获取音频的pts 告诉视频，控制视频的解码时间
-        int apts = audioPlay->pts;
-        //ALOGD("JMPlayer::Main apts = %d", apts);
-        vdecode->synPts = apts;
-
+        VideoDisplay(&remainTime);
         mux.unlock();
-        XSleep(2);
+        if(remainTime > 0.0)
+           XSleep(remainTime);
     }
+}
+
+void JMPlayer::VideoDisplay(double * remainTime)
+{
+    *remainTime = 2.0;
+    //同步
+    //获取音频的pts 告诉视频，控制视频的解码时间
+    int apts = audioPlay->pts;
+    //ALOGD("JMPlayer::Main apts = %d", apts);
+    vdecode->synPts = apts;
+
+    view->Render();
 }
 
 void JMPlayer::Close()
@@ -171,6 +176,8 @@ void JMPlayer::Close()
         adecode->Clear();
     if (audioPlay)
         audioPlay->Clear();
+    if (view)
+        view->Clear();
 
     //3 清理资源
     if (audioPlay)
