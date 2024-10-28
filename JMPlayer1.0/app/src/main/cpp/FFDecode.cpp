@@ -9,7 +9,6 @@
 
 #include <jni.h>
 
-
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -18,21 +17,95 @@ extern "C" {
 #include <libavcodec/jni.h>
 }
 
-long long GetNowMs()
-{
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-    int sec = tv.tv_sec%360000;
-    long long t = sec*1000 + tv.tv_usec/1000;
 
-    return t;
+void JMDecode::Update(XData pkt)
+{
+    //ALOGD("JMDecode::pkt.isAudio %d \n", pkt.isAudio);
+    if (pkt.isAudio != isAudio) {
+        return;
+    }
+    while (!isExit) {
+        packsMutex.lock();
+        if (packs.size() < maxList) {
+            packs.push_back(pkt);  //生产者
+            packsMutex.unlock();
+            break;
+        }
+        packsMutex.unlock();
+        XSleep(1);
+    }
 }
+
+void JMDecode::Clear()
+{
+    packsMutex.lock();
+    while (!packs.empty()) {
+        packs.front().Drop();
+        packs.pop_front();
+    }
+    pts = 0;
+    synPts = 0;
+    packsMutex.unlock();
+}
+
+void JMDecode::Main()
+{
+    ALOGD("JMDecode::Main enter");
+    int i = 0;
+    while (!isExit) {
+
+        if(IsPause()) {
+            XSleep(2);
+            continue;
+        }
+        packsMutex.lock();
+
+        /*if(!isAudio && synPts > 0) {
+            //ALOGD("JMDecode::Main synPts=%d pts=%d ",synPts,pts);
+            if(synPts < pts ){
+                packsMutex.unlock();
+                XSleep(1);
+                continue;
+            }
+        }*/
+
+        if (packs.empty()) {
+            packsMutex.unlock();
+            XSleep(1);
+            continue;
+        }
+
+        XData pack = packs.front();  //取出packet 消费者
+        packs.pop_front();
+
+        if(this->sendPacket(pack)) {
+            while (!isExit) {
+                XData frame = receiveFrame();
+                if (!frame.data) {
+                    //ALOGD("receiveFrame frame data is null");
+                    break;
+                }
+                i++;
+                //pts = frame.pts;
+                //ALOGD("JMDecode::Main pts=%d frame.pts=%d \n",pts,frame.pts);
+                //ALOGD("receiveFrame frame size: %d", frame.size);
+                this->Notify(frame);
+            }
+        }
+
+        pack.Drop();
+        packsMutex.unlock();
+    }
+}
+
+//==========================FFDecode start===========================
 
 void FFDecode::InitHard(void *vm)
 {
     ALOGD("FFDecode::InitHard");
     av_jni_set_java_vm((JavaVM *)vm, 0);
 }
+
 
 FFDecode::FFDecode()
 {
@@ -122,12 +195,13 @@ bool FFDecode::CreateDecode(XParameter para, bool isHard)
         }*/
     }
 
+    videoFramecount = 0;
+    audioFramecount = 0;
+
     mux.unlock();
     ALOGE("avcodec_open2 success !!");
     return true;
 }
-
-
 
 bool FFDecode::sendPacket(XData pkt)
 {
@@ -151,7 +225,7 @@ XData FFDecode::receiveFrame()
 {
     mux.lock();
     int ret;
-    int frameCount = 0;
+
     if (!cc) {
         mux.unlock();
         return XData();
@@ -164,31 +238,30 @@ XData FFDecode::receiveFrame()
     ret = avcodec_receive_frame(cc, frame);
     if (ret != 0) {
         mux.unlock();
-        ALOGE("avcodec_receive_frame no more input stream \n");
+        //ALOGE("avcodec_receive_frame no more input stream \n");
         return XData();
     }
 
-    XData frameData;
+    XData frameData ;
     frameData.data = (unsigned char *) frame;
+
     if (cc->codec_type == AVMEDIA_TYPE_VIDEO) {
-        frameData.videoFramecount++;
         frameData.size = (frame->linesize[0] + frame->linesize[1] + frame->linesize[2]) * frame->height;
         frameData.width = frame->width;
         frameData.height = frame->height;
-
         this->outWidth = frame->width;
         this->outHeight = frame->height;
-        ALOGD("avcodec_receive_frame decode video Framecount=%lld pts = %lld",frameData.videoFramecount,frame->pts);
-    } else {
-        frameData.audioFramecount++;
-        frameData.size =av_get_bytes_per_sample((AVSampleFormat)frame->format ) * frame->nb_samples * 2;
-        ALOGD("avcodec_receive_frame decode audio Framecount=%lld pts = %lld",frameData.audioFramecount,frame->pts);
-    }
 
-    frameData.format = frame->format;
-    if (!isAudio) {
-        ALOGD("frameData.format = %d", frameData.format); // 25 nv21
+        frameData.videoFramecount = videoFramecount++;
+        //ALOGD("[%s:%d] video frame Framecount=%ld format=%d vpts = %lld ,",__func__, __LINE__,
+        //    frameData.videoFramecount,frame->format,frame->pts);  //format : 25 nv21
+    } else {
+        frameData.audioFramecount = audioFramecount++;
+        frameData.size =av_get_bytes_per_sample((AVSampleFormat)frame->format ) * frame->nb_samples * 2;
+        //ALOGD("[%s:%d] audio frame Framecount=%ld apts = %lld",__func__, __LINE__,
+        //      frameData.audioFramecount,frame->pts);
     }
+    frameData.format = frame->format;
 
     memcpy(frameData.datas, frame->data, sizeof(frameData.datas));  //这里需要优化，cp一个frame 这个消耗会很大，遇到4k那就更大
 
@@ -196,7 +269,7 @@ XData FFDecode::receiveFrame()
     pts = frameData.pts;
 
     mux.unlock();
-    //ALOGD("FFDecode::receiveFrame pts = %d", frameData.pts);
     return frameData;
 }
 
+//==========================FFDecode end===========================

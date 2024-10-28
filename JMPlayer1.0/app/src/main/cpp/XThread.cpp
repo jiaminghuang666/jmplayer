@@ -16,42 +16,41 @@ void XSleep(int Ms)
 
 bool XThread::StartThread()
 {
-    ALOGD("StartThread enter 1");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     isExit = false;
     threadPause = false;
 
     thread th(&XThread::ThreadMain, this);
     th.detach();
-    ALOGD("StartThread enter 2");
+
     return true;
 }
 
 void XThread::StopThread()
 {
-    ALOGD("StopThread enter ");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     isExit = true;
 
     for (int i = 0; i < 200; i++) {
         if (!isRuning) {
-            ALOGD("StopThread ok ");
+            ALOGD("[%s:%d] is running",__func__, __LINE__);
             return;
         }
         XSleep(1);
     }
-    ALOGD("StopThread end ");
+
 }
 
 void XThread::SetPause(bool isPause)
 {
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
      threadPause = isPause;
      for ( int i = 0; i < 10; i++) {
-
          if (isPausing == isPause){
              break;
          }
          XSleep(10);
      }
-
 }
 
 bool  XThread::IsPause()
@@ -62,9 +61,9 @@ bool  XThread::IsPause()
 
 void XThread::ThreadMain()
 {
-    isRuning = true;
     ALOGD("ThreadMain enter ");
+    isRuning = true;
     Main();
-    ALOGD("ThreadMain end ");
     isRuning = false;
+    ALOGD("ThreadMain end ");
 }

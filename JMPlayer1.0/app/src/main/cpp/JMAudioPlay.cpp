@@ -8,7 +8,7 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 
-XData  JMAudioPlay::GetData()
+XData  JMAudioPlay::DequeuePCM()
 {
     XData d;
 
@@ -25,8 +25,7 @@ XData  JMAudioPlay::GetData()
             d = frames.front();
             frames.pop_front();
             framesMutex.unlock();
-            pts = d.pts;
-            //ALOGD("JMAudioPlay::GetData pts=%d \n",pts);
+            //apts = d.pts;
             return d;
         }
         framesMutex.unlock();
@@ -48,9 +47,9 @@ void JMAudioPlay::Clear()
     framesMutex.unlock();
 }
 
-void JMAudioPlay::Update(XData data)
+
+void JMAudioPlay::EnqueuePCM(XData data)
 {
-    //ALOGD("JMAudioPlay::Update \n");
     if(data.size <= 0 || !data.data) {
         ALOGE("JMAudioPlay::Update data == MULL fail \n");
         return ;
@@ -68,6 +67,13 @@ void JMAudioPlay::Update(XData data)
         framesMutex.unlock();
         break;
     }
+}
+
+
+void JMAudioPlay::Update(XData data)
+{
+    //ALOGD("JMAudioPlay::Update \n");
+    EnqueuePCM(data);
 }
 
 
@@ -109,28 +115,31 @@ static SLEngineItf CreateSL()
 void SLAudioPlay::PlayCall(void *bufq)
 {
     if (!bufq) {
-        ALOGE("SLAudioPlay::PlayCall bufq == NULL \n");
+        ALOGE("[%s:%d]bufq == NULL \n",__func__, __LINE__);
         return;
     }
     SLAndroidSimpleBufferQueueItf bf = (SLAndroidSimpleBufferQueueItf)bufq;
 
-    XData d = GetData();
+    XData d = DequeuePCM();
     if (d.size <= 0) {
-        ALOGE("SLAudioPlay::PlayCall GetData size is 0 \n");
+        ALOGE("[%s:%d] GetData size is 0 \n",__func__, __LINE__);
         return ;
     }
     if (!buf) {
-        ALOGE("SLAudioPlay::PlayCall buf == NULL \n");
+        ALOGE("[%s:%d] buf == NULL \n",__func__, __LINE__);
         return ;
     }
+
+    apts = d.pts;  //audio clk
+    ALOGE("[%s:%d] Render audio: isAudio=%d audioFramecount=%ld apts=%ld \n",__func__, __LINE__, d.isAudio, d.audioFramecount,d.pts);
 
     memcpy(buf, d.data, d.size);
     mux.lock();
     if (pcmQue && (*pcmQue))
         (*pcmQue)->Enqueue(pcmQue,buf,d.size);
+
     mux.unlock();
     d.Drop();
-    //ALOGD("SLAudioPlay::PlayCall ==success== ");
 }
 
 void PcmCall(SLAndroidSimpleBufferQueueItf bf,void *contex)
@@ -138,7 +147,7 @@ void PcmCall(SLAndroidSimpleBufferQueueItf bf,void *contex)
     //ALOGD("PcmCall");
     SLAudioPlay *ap = (SLAudioPlay *)contex;
     if (!ap){
-        ALOGE("SLAudioPlay ap == NULL failed!");
+        ALOGE("[%s:%d]  ap == NULL failed!",__func__, __LINE__);
         return;
     }
     ap->PlayCall((void *)bf);
@@ -146,6 +155,7 @@ void PcmCall(SLAndroidSimpleBufferQueueItf bf,void *contex)
 
 void SLAudioPlay::Close()
 {
+    ALOGD("[%s:%d] success !!",__func__, __LINE__);
     JMAudioPlay::Clear();
 
     mux.lock();
@@ -175,7 +185,8 @@ void SLAudioPlay::Close()
     mux.unlock();
 }
 
-bool SLAudioPlay::StartPlay(XParameter out)
+
+bool SLAudioPlay::initAudioPlay(XParameter out)
 {
     Close();
     mux.lock();
@@ -183,18 +194,18 @@ bool SLAudioPlay::StartPlay(XParameter out)
     eng = CreateSL();
     if(!eng){
         mux.unlock();
-        ALOGE("CreateSL fail !！ ");
+        ALOGE("[%s:%d] CreateSL failed!",__func__, __LINE__);
         return false;
     }
-    ALOGD("SLAudioPlay::StartPlay CreateSL ==success==");
 
+    ALOGD("[%s:%d]  CreateSL ==success==",__func__, __LINE__);
     //2 创建混音器
     SLresult re = 0;
     re = (*eng)->CreateOutputMix(eng,&mix,0,0,0);
     if(re !=SL_RESULT_SUCCESS )
     {
         mux.unlock();
-        ALOGE("SL_RESULT_SUCCESS failed!");
+        ALOGE("[%s:%d] failed!",__func__, __LINE__);
         return false;
     }
     re = (*mix)->Realize(mix,SL_BOOLEAN_FALSE);
@@ -206,12 +217,13 @@ bool SLAudioPlay::StartPlay(XParameter out)
     }
     SLDataLocator_OutputMix outmix = {SL_DATALOCATOR_OUTPUTMIX,mix};
     SLDataSink audioSink= {&outmix,0};
-    ALOGD("SLAudioPlay::StartPlay CreateOutputMix ==success==");
+    ALOGD("[%s:%d]  CreateSL mix ==success==",__func__, __LINE__);
 
     //3 配置音频信息
     //缓冲队列
     SLDataLocator_AndroidSimpleBufferQueue que = {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE,10};
     //音频格式
+    ALOGD("[%s:%d]  configure param: out.channels=%d out.sample_rate *1000=%d ",__func__, __LINE__,out.channels, out.sample_rate *1000);
     SLDataFormat_PCM pcm = {
             SL_DATAFORMAT_PCM,
             (SLuint32)out.channels,//    声道数
@@ -222,7 +234,7 @@ bool SLAudioPlay::StartPlay(XParameter out)
             SL_BYTEORDER_LITTLEENDIAN //字节序，小端
     };
     SLDataSource ds = {&que,&pcm};
-    ALOGD("SLAudioPlay::StartPlay configure ==success==");
+    ALOGD("[%s:%d]  CreateSL ds ==success==",__func__, __LINE__);
 
     //4 创建播放器
     const SLInterfaceID ids[] = {SL_IID_BUFFERQUEUE};
@@ -231,7 +243,7 @@ bool SLAudioPlay::StartPlay(XParameter out)
     if(re !=SL_RESULT_SUCCESS )
     {
         mux.unlock();
-        ALOGE("CreateAudioPlayer failed!");
+        ALOGE("[%s:%d] CreateAudioPlayer failed!",__func__, __LINE__);
         return false;
     }
     (*player)->Realize(player,SL_BOOLEAN_FALSE);
@@ -240,23 +252,21 @@ bool SLAudioPlay::StartPlay(XParameter out)
     if(re !=SL_RESULT_SUCCESS )
     {
         mux.unlock();
-        ALOGE("GetInterface SL_IID_PLAY failed!");
+        ALOGE("[%s:%d] GetInterface failed!",__func__, __LINE__);
         return false;
     }
     re = (*player)->GetInterface(player,SL_IID_BUFFERQUEUE,&pcmQue);
     if(re !=SL_RESULT_SUCCESS )
     {
         mux.unlock();
-        ALOGE("GetInterface SL_IID_BUFFERQUEUE failed!");
+        ALOGE("[%s:%d] GetInterface failed!",__func__, __LINE__);
         return false;
     }
-    ALOGD("SLAudioPlay::StartPlay GetInterface ==success==");
-
     //设置回调函数，播放队列空调用
     (*pcmQue)->RegisterCallback(pcmQue,PcmCall,this);
 
     //设置为播放状态
-    (*iplayer)->SetPlayState(iplayer,SL_PLAYSTATE_PLAYING);
+    (*iplayer)->SetPlayState(iplayer, SL_PLAYSTATE_PAUSED);
 
     //启动队列回调
     (*pcmQue)->Enqueue(pcmQue,"",1);
@@ -264,8 +274,22 @@ bool SLAudioPlay::StartPlay(XParameter out)
     isExit = false;
 
     mux.unlock();
-    ALOGD("SLAudioPlay::StartPlay ==success==");
+    ALOGD("[%s:%d] StartPlay ==success==!",__func__, __LINE__);
+
 
     return true;
+}
+
+
+bool SLAudioPlay::StartPlay()
+{
+    if (iplayer && (*iplayer)) {  //停止播放
+        ALOGD("[%s:%d]  ==success==!",__func__, __LINE__);
+        (*iplayer)->SetPlayState(iplayer, SL_PLAYSTATE_PLAYING);
+        return true;
+    } else {
+        ALOGD("[%s:%d]  fail!!!",__func__, __LINE__);
+        return false;
+    }
 }
 //==================SLAudioPlay==========================

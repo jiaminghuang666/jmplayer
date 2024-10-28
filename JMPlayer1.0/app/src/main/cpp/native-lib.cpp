@@ -121,7 +121,7 @@ Java_com_example_JMPlayer_PlaybackActivity_Open(JNIEnv *env, jobject thiz, jstri
     const char *myurl = env->GetStringUTFChars(url, 0);
     ALOGD("jiaming jni Java_com_example_JMPlayer_PlaybackActivity_Open %s \n",myurl);
 
-    JMPlayerPorxy::Get()->Open(myurl);
+    JMPlayerPorxy::Get()->setDataSource(myurl);
     JMPlayerPorxy::Get()->Start();
 
     env->ReleaseStringUTFChars(url,myurl);
@@ -139,7 +139,7 @@ Java_com_example_JMPlayer_JMPlayer_setDataSource(JNIEnv *env, jobject thiz, jstr
     const char *myurl = env->GetStringUTFChars(url, 0);
 
     ALOGD("jiaming jni Java_com_example_JMPlayer_PlaybackActivity_Open %s \n",myurl);
-    JMPlayerPorxy::Get()->Open(myurl);
+    JMPlayerPorxy::Get()->setDataSource(myurl);
     env->ReleaseStringUTFChars(url,myurl);
 
 

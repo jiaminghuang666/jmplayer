@@ -8,14 +8,13 @@
 #include <string>
 #include <jni.h>
 
-#include "JMDemux.h"
-#include "JMDecode.h"
-#include "JMAudioPlay.h"
-#include "JMResample.h"
+#include "FFDemux.h"
+#include "FFDecode.h"
+#include "FFResample.h"
+
 #include "XThread.h"
 #include "JMVideoView.h"
-
-
+#include "JMAudioPlay.h"
 
 #include <thread>
 #include <mutex>
@@ -26,7 +25,8 @@ public:
     static JMPlayer *Get(unsigned char index = 0);
     int InitHard(void *vm);
     int PlayerBuilder(int (*msg_loop)(void*),JMPlayer *player);
-    virtual int Open(const char *myurl);
+    virtual int  setDataSource(const char *myurl);
+    virtual int prepareAsync();
     virtual void Close();
     virtual bool Start();
     virtual void Pause(bool isPause);
@@ -44,10 +44,7 @@ public:
     //virtual int jmplayer_msg_loop(void *arg);
     int (*msg_loop)(void *);
 
-
-
     void VideoDisplay(double * remainTime);
-
 
 private:
     JMDemux *myDemux = NULL;

@@ -13,14 +13,17 @@
 
 class JMAudioPlay:public JMObserver {
 public:
-    virtual void Update(XData data);
-    virtual bool StartPlay(XParameter out) = 0;
-    virtual void Close() = 0;
     virtual void Clear();
+    virtual XData DequeuePCM();
+    virtual void EnqueuePCM(XData data);
+    virtual void Update(XData data);
 
-    virtual XData GetData();
-    int maxFrame = 100;
-    int pts = 0;
+
+    virtual bool initAudioPlay(XParameter out) = 0;
+    virtual bool  StartPlay() = 0;
+    virtual void Close() = 0;
+    int maxFrame = 50;
+    int apts = 0;
 protected:
     std::mutex framesMutex;
     std::list <XData> frames;
@@ -28,7 +31,8 @@ protected:
 
 class SLAudioPlay :public JMAudioPlay {
 public:
-    virtual bool StartPlay(XParameter out);
+    virtual bool initAudioPlay(XParameter out);
+    virtual bool StartPlay();
     virtual void Close();
     void PlayCall(void *bufq);
 

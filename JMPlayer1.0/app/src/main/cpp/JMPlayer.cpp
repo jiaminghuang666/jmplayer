@@ -32,23 +32,16 @@
 #include "FFResample.h"
 #include "JMAudioPlay.h"
 
+#include "utils.h"
+
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 }
-/*
-std::string test(int a ,int b)
-{
-    std::string getVersion = "ffmpeg Version";
-    getVersion += avcodec_configuration();
-    ALOGD("jiaming test %s \n", getVersion.c_str());
-
-    return getVersion.c_str();
-}*/
 
 int JMPlayer::InitHard(void *vm)
 {
-    ALOGD("Jmplayer  JniLoader");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     FFDecode::InitHard(vm);
     return 0;
 }
@@ -61,7 +54,7 @@ JMPlayer *JMPlayer::Get(unsigned char index)
 
 int JMPlayer::getMsg(AVMessage *msg)
 {
-    ALOGD("JMPlayer::getMsg ");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     mux.lock();
     msg_queue_get(&node, msg);
     mux.unlock();
@@ -80,12 +73,11 @@ int JMPlayer::setMsg(int what, int arg1,int arg2)
 
 int jmplayer_msg_loop(void *arg)
 {
-    ALOGD("Jmplayer  jmplayer_msg_loop enter");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     JMPlayer *myJMPlayer = (JMPlayer *)arg;
 
     myJMPlayer->msg_loop(arg);
 
-    ALOGD("Jmplayer  jmplayer_msg_loop exit ");
 
     return 0;
 }
@@ -94,7 +86,7 @@ int JMPlayer::PlayerBuilder(int (*msg_loop)(void*), JMPlayer *player)
 {
     int ret = 0;
 
-    ALOGD("Jmplayer  PlayerBuilder enter");
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
 
     player->msg_loop = msg_loop;
     std::thread JmPlayerThread(jmplayer_msg_loop, player);
@@ -116,29 +108,18 @@ int JMPlayer::PlayerBuilder(int (*msg_loop)(void*), JMPlayer *player)
     audioPlay = new SLAudioPlay();  //音频播放观察重采样
     resample->AddObs(audioPlay);
 
-    ALOGD("Jmplayer  PlayerBuilder exit");
+
     return ret;
 }
 
-
-void JMPlayer::Main()
+int JMPlayer::InitView(void * win)
 {
-   double remainTime = 0.0;
-
-    while (!isExit) {
-        mux.lock();
-        if(!audioPlay || !vdecode) {
-            ALOGD("JMPlayer::Main apts 2");
-            mux.unlock();
-            XSleep(2);
-            continue;
-        }
-
-        VideoDisplay(&remainTime);
-        mux.unlock();
-        if(remainTime > 0.0)
-           XSleep(remainTime);
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
+    if (view ) {
+        view->Close();
+        view->SetRender(win);
     }
+    return 0;
 }
 
 void JMPlayer::VideoDisplay(double * remainTime)
@@ -146,15 +127,69 @@ void JMPlayer::VideoDisplay(double * remainTime)
     *remainTime = 2.0;
     //同步
     //获取音频的pts 告诉视频，控制视频的解码时间
-    int apts = audioPlay->pts;
-    //ALOGD("JMPlayer::Main apts = %d", apts);
-    vdecode->synPts = apts;
 
-    view->Render();
+    return;
+}
+
+void JMPlayer::Main()  //render
+{
+   double remainTime = 0.0;
+
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
+    if(!view || !audioPlay ) {
+        ALOGE("[%s:%d] audioPlay=NULL vdecode=NULL ",__func__, __LINE__);
+        XSleep(2);
+    }
+
+    XData xdata = view->DequeueSurface();
+    if (!view->initSurface(&xdata)) {//init surface
+        ALOGE("[%s:%d] audioPlay=NULL vdecode=NULL ",__func__, __LINE__);
+        return ;
+    }
+    if (!audioPlay || !audioPlay->StartPlay()) {      // render audio
+        ALOGE("[%s:%d] audioPlay=NULL ",__func__, __LINE__);
+        //return false;
+    }
+    int firstapts = audioPlay->apts;
+    int firstvpts = view->vpts;
+    ALOGD("VideoDisplay ++++first++ apts = %ld vpts = %ld", firstapts, firstvpts);
+
+    while (!isExit) {
+        mux.lock();
+        if(!audioPlay || !vdecode ) {
+            ALOGE("[%s:%d] audioPlay=NULL vdecode=NULL ",__func__, __LINE__);
+            mux.unlock();
+            XSleep(2);
+            continue;
+        }
+
+        //if(remainTime > 0.0)
+        //    XSleep(remainTime);
+        //VideoDisplay(&remainTime);  //render video
+
+        int apts = audioPlay->apts;
+        int vpts = 0;
+
+        long long t1 = GetNowMs();
+        XData xdata = view->DequeueSurface();
+        vpts = view->vpts;
+        ALOGD("VideoDisplay apts = %ld vpts = %ld", apts, vpts);
+
+        view->Render(&xdata);
+        long long t2 = GetNowMs();
+        long long diff = t2 - t1;
+
+        ALOGD("VideoDisplay t1 = %lld t2 = %lld diff=%lld", t1, t2,diff);
+
+        mux.unlock();
+    }
+
+    return ;
 }
 
 void JMPlayer::Close()
 {
+    ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
     mux.lock();
 
     XThread::StopThread(); //停止同步线程
@@ -192,77 +227,90 @@ void JMPlayer::Close()
         myDemux->Close();
 
     mux.unlock();
+    ALOGD("[%s:%d] ==end==",__func__, __LINE__);
 }
 
-int JMPlayer::Open(const char *myurl)
+int JMPlayer::setDataSource(const char *myurl)
 {
     Close();
 
+    ALOGD("[%s:%d] Open %s ==enter==",__func__, __LINE__,myurl);
     mux.lock();
     int ret = 0;
     if (!myDemux || !myDemux->Open(myurl)) {
         mux.unlock();
-        ALOGE("JMPlayer::Open demux fail !!");
+        ALOGE("[%s:%d] myDemux=null fail!!",__func__, __LINE__);
         return false;
     }
     // create video deocder
-    if (!vdecode || !vdecode->CreateDecode( myDemux->getVPara(), true)) {
-        ALOGE("JMPlayer::Open video CreateDecode fail !!");
+    if (!vdecode || !vdecode->CreateDecode( myDemux->getVPara(), false)) {
+        ALOGE("[%s:%d] vdecode=null fail!!",__func__, __LINE__);
         //return false;
     }
 
     // create audio deocder
     if (!adecode || !adecode->CreateDecode( myDemux->getAPara(), false)) {
-        ALOGE("JMPlayer::Open audio CreateDecode fail !!");
+        ALOGE("[%s:%d] adecode=null fail!!",__func__, __LINE__);
         //return false;
     }
 
     // create video resample
     //if (outPara.sample_rate <= 0)
-        outPara = myDemux->getAPara();
+    outPara = myDemux->getAPara();
     if ( !resample || !resample->Open(myDemux->getAPara(),outPara)) {
-        ALOGE("JMPlayer::Open audio CreateDecode fail !!");
+        ALOGE("[%s:%d] resample=null fail!!",__func__, __LINE__);
         //return false;
     }
 
-    ALOGD("JMPlayer::Open  success %s", myurl);
+    ALOGD("JMPlayer::Start audioPlay outPara sample_rate=%d channels=%d ",outPara.sample_rate,outPara.channels );
+    if (!audioPlay || !audioPlay->initAudioPlay(outPara)){
+        ALOGE("[%s:%d] audioPlay=null fail!!",__func__, __LINE__);
+        return false;
+    }
+
     mux.unlock();
+    ALOGD("[%s:%d] ==end==",__func__, __LINE__);
     return ret;
+}
+
+int JMPlayer::prepareAsync()
+{
+
+    return 0;
 }
 
 bool JMPlayer::Start()
 {
     mux.lock();
-    if (!vdecode || !vdecode->StartThread()) {
-        ALOGE("JMPlayer::Start video decoder fail ");
-        //return false;
-    }
-
+    ALOGD("[%s:%d]  myDemux->StartThread ==start==",__func__, __LINE__);
     if (!myDemux || !myDemux->StartThread()) {
         //mux.unlock();
-        ALOGE("JMPlayer::Start demux fail ");
+        ALOGE("[%s:%d] myDemux=NULL ",__func__, __LINE__);
         return false;
     }
 
+    ALOGD("[%s:%d]  vdecode->StartThread ==start==",__func__, __LINE__);
+    if (!vdecode || !vdecode->StartThread()) {
+        ALOGE("[%s:%d] vdecode=NULL ",__func__, __LINE__);
+        //return false;
+    }
+
+    ALOGD("[%s:%d]  adecode->StartThread ==start==",__func__, __LINE__);
     if(!adecode || !adecode->StartThread()) {
-        ALOGE("JMPlayer::Start audio decoder fail ");
+        ALOGE("[%s:%d] adecode=NULL ",__func__, __LINE__);
         //return false;
     }
 
-    if (!audioPlay || !audioPlay->StartPlay(outPara)){
-        ALOGE("JMPlayer::Start audioPlay StartPlay fail ");
-        //return false;
-    }
-    ALOGD("JMPlayer::Start audioPlay outPara sample_rate=%d channels=%d ",outPara.sample_rate,outPara.channels );
-
-    XThread::StartThread();
+    XThread::StartThread();   // start render
 
     mux.unlock();
+    ALOGD("[%s:%d] ==end==",__func__, __LINE__);
     return true;
 }
 
 void JMPlayer::Pause(bool isPause)
 {
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
     mux.lock();
     XThread::SetPause(isPause);
     if (myDemux)
@@ -276,14 +324,6 @@ void JMPlayer::Pause(bool isPause)
     mux.unlock();
 }
 
-int JMPlayer::InitView(void * win)
-{
-    if (view ) {
-        view->Close();
-        view->SetRender(win);
-    }
-    return 0;
-}
 
 
 double JMPlayer::getCurrentPosition()
@@ -297,7 +337,7 @@ double JMPlayer::getCurrentPosition()
     if (duration > 0) {
         if (vdecode) {
             position = (double )vdecode->pts / (double )duration;
-            //ALOGD("JMPlayer::GetPosition  pts =%d duration=%d position=%f", vdecode->pts,duration,position);
+            //ALOGD("[%s:%d]  pts =%d duration=%d position=%f",__func__, __LINE__, vdecode->pts,duration,position);
         }
     }
 
@@ -308,6 +348,7 @@ double JMPlayer::getCurrentPosition()
 int JMPlayer::getDuration()
 {
     int duration = 0;
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
     mux.lock();
     if (myDemux)
         duration = myDemux->durationMs;
@@ -318,7 +359,7 @@ int JMPlayer::getDuration()
 
 bool JMPlayer::Seek(double Position)
 {
-    ALOGD("seek start ");
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
     bool ret = false;
     if (!myDemux) return false;
 
@@ -369,7 +410,7 @@ bool JMPlayer::Seek(double Position)
     Pause(false);
 
     mux.unlock();
-    ALOGD("seek end ");
+    ALOGD("[%s:%d]  ==end==",__func__, __LINE__);
     return ret;
 }
 
@@ -377,12 +418,13 @@ int JMPlayer::getVideoHeight()
 {
     int height = 0;
 
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
     mux.lock();
     if (vdecode) {
         height =  vdecode->outHeight;
     }
     mux.unlock();
-
+    ALOGD("[%s:%d]  height=%d ",__func__, __LINE__,height);
     return height;
 }
 
@@ -390,11 +432,13 @@ int JMPlayer::getVideoWidth()
 {
     int Width = 0;
 
+    ALOGD("[%s:%d]  ==enter==",__func__, __LINE__);
     mux.lock();
     if (vdecode) {
         Width =  vdecode->outWidth;
     }
     mux.unlock();
 
+    ALOGD("[%s:%d]  height=%d ",__func__, __LINE__,Width);
     return Width;
 }

@@ -17,7 +17,8 @@ public:
     //}
      void Init(void *vm = 0, int(*msg_loop)(void*) = NULL);
 
-    virtual int Open(const char *myurl);
+    virtual int setDataSource(const char *myurl);
+    virtual int prepareAsync();
     virtual void Close();
     virtual bool Start();
     virtual void Pause(bool isPase);

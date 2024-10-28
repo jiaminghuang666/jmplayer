@@ -5,8 +5,14 @@
 #ifndef JMPLAYER_FFDEMUX_H
 #define JMPLAYER_FFDEMUX_H
 
-#include "JMDemux.h"
+#include "XData.h"
+#include "XThread.h"
+#include "JMObserver.h"
+#include "XParameter.h"
+
+
 #include "FFDecode.h"
+#include "FFDemux.h"
 
 #include <mutex>
 
@@ -17,6 +23,23 @@ typedef struct MediaInfo {
     int duration;
 
 }MediaInfo;
+
+class JMDemux :public JMObserver {
+public:
+    virtual bool Open(const char *url) = 0;
+    virtual void Close() = 0;
+    virtual XData Read() = 0;
+    virtual XParameter getVPara() = 0;
+    virtual XParameter getAPara() = 0;
+
+    int durationMs = 0;
+
+    virtual bool Seekto(double Position) = 0;
+
+protected:
+    virtual void Main();
+};
+
 
 class FFDemux: public JMDemux {
 public:

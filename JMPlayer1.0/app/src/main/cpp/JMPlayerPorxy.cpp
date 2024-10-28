@@ -36,14 +36,20 @@ void JMPlayerPorxy::Close()
     mux.unlock();
 }
 
-int JMPlayerPorxy::Open(const char *myurl)
+int JMPlayerPorxy::setDataSource(const char *myurl)
 {
     int ret = 0;
     mux.lock();
     if (player)
-        ret = player->Open(myurl);
+        ret = player->setDataSource(myurl);
     mux.unlock();
     return ret;
+}
+
+int JMPlayerPorxy::prepareAsync()
+{
+    player->prepareAsync();
+    return 0;
 }
 
 bool JMPlayerPorxy::Start()

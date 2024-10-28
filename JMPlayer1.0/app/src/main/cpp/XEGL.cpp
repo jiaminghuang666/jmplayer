@@ -22,7 +22,6 @@ public:
     virtual void Draw()
     {
         mux.lock();
-        ALOGD("======= eglSwapBuffers  frame ======");
         if (display == EGL_NO_DISPLAY || surface == EGL_NO_SURFACE) {
             mux.unlock();
             ALOGE("======= Draw frame fail: NO display & NO surface ======");
@@ -60,6 +59,7 @@ public:
     {
         ANativeWindow *nwin = (ANativeWindow *) win;
 
+        ALOGD("[%s:%d] ==enter==",__func__, __LINE__);
         Close();
 
         mux.lock();
@@ -70,7 +70,7 @@ public:
             ALOGE("eglGetDisplay failed !");
             return false;
         }
-        ALOGD("eglGetDisplay success !");
+        ALOGD("[%s:%d] eglGetDisplay ==success==",__func__, __LINE__);
 
         //2 初始化Display
         if (EGL_TRUE != eglInitialize(display, 0, 0)) {

@@ -7,9 +7,21 @@
 
 #include "XParameter.h"
 #include "XData.h"
-#include "JMResample.h"
 
 #include <mutex>
+
+#include "JMObserver.h"
+#include "XParameter.h"
+
+class JMResample :public JMObserver {
+public:
+    virtual bool Open(XParameter in, XParameter out) = 0;
+    virtual XData Resample(XData indata) = 0;
+    virtual void Update(XData data);
+    int outChannels = 2;
+    int outFormat = 1;
+};
+
 
 struct SwrContext;
 class FFResample :public JMResample {

@@ -64,8 +64,9 @@ public class PlaybackActivity extends FragmentActivity implements SeekBar.OnSeek
         @Override
         public void run() {
             Log.d(TAG, "jiaming java thread open " );
-            Open("/data/1080.mp4", this);
+            Open("/data/Bee.mkv", this);
 
+            //Open("/data/1080i.mp4", this);
             duration = myJMplayer.getDuration();
             Log.d(TAG, "jiaming video duration: " + duration);
 

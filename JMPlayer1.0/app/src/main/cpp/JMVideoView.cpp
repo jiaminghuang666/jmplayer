@@ -8,7 +8,7 @@
 
 void JMVideoView::EnqueueRender(XData data)
 {
-    ALOGE("[EnqueueRender %d] \n ", __LINE__);
+    //ALOGE("[EnqueueRender %d] \n ", __LINE__);
     if (data.size <=0 || !data.data) {
       ALOGE("[EnqueueRender %d] data == NULL \n ", __LINE__);
       return ;
@@ -28,7 +28,7 @@ void JMVideoView::EnqueueRender(XData data)
 
 XData JMVideoView::DequeueRender()
 {
-    ALOGE("[DequeueRender %d] \n ", __LINE__);
+    //ALOGE("[DequeueRender %d] \n ", __LINE__);
     XData d;
     isRuning = true;
     while(!isExit){
@@ -42,6 +42,7 @@ XData JMVideoView::DequeueRender()
          d = frames.front();
          frames.pop_front();
          framesMutex.unlock();
+         //vpts = d.pts;
          return d;
        }
        framesMutex.unlock();
@@ -89,19 +90,36 @@ void GLVideoView::SetRender(void *win)
     view = win;
 }
 
-void GLVideoView::Render()
+XData GLVideoView::DequeueSurface()
 {
-    XData data = DequeueRender();
+    return DequeueRender();
+}
+
+bool GLVideoView::initSurface(XData *data)
+{
+    vpts = data->pts;
     if (!view) {
         ALOGE("GLVideoView::Render view fail \n ");
-        return ;
+        return false;
     }
     if (!txt) {
         txt =XTexture::Create();
-        txt->Init(view, (XTextureType)data.format);
+        txt->Init(view, (XTextureType)data->format);
     }
+    initedSurface = 1;
 
-    ALOGE("GLVideoView::Render Draw:videoFramecount=%lld datas=%p  width=%d  height=%d \n ",data.datas,data.width, data.height,data.videoFramecount );
-    txt->Draw(data.datas, data.width, data.height);
+    return true;
+}
+
+void GLVideoView::Render(XData *data)
+{
+       vpts = data->pts;
+       ALOGD("[%s:%d] Render video: videoFramecount=%ld pts=%ld datas=%p  width=%d  height=%d ",__func__, __LINE__,
+             data->videoFramecount, data->pts, data->datas, data->width, data->height );
+
+       txt->Draw(data->datas, data->width, data->height);
+       initedSurface++;
+
+    return;
 }
 //================GLVideoView=====================

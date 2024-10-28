@@ -14,6 +14,26 @@ extern "C" {
 
 }
 
+void JMDemux::Main()
+{
+    ALOGD("JMDemux::Main enter");
+    while (!isExit) {
+        if (IsPause()) {
+            XSleep(2);
+            continue;
+        }
+
+        XData d = Read();
+        if(d.size > 0)
+            Notify(d);
+        else
+            XSleep(2);
+
+        //ALOGD("read data size is %d", d.size);
+        //if (d.size <= 0) break;
+    }
+}
+
 static double r2d(AVRational r)
 {
     return r.num == 0 || r.den == 0 ? 0:(double)r.num / (double) r.den;
@@ -22,11 +42,17 @@ static double r2d(AVRational r)
 FFDemux::FFDemux()
 {
     static bool isFirst = true;
+
+    std::string getVersion = "ffmpeg Version";
+    getVersion += avcodec_configuration();
+    ALOGD("jiaming %s \n", getVersion.c_str());
+
     if (isFirst) {
         isFirst = false;
         av_register_all();   //初始化解封装
         avformat_network_init(); //初始化网络
         avcodec_register_all();
+
         ALOGD("register FFDemux !!");
     }
 }
@@ -182,12 +208,12 @@ XParameter FFDemux::getAPara()
     para.sample_rate = ic->streams[ret]->codecpar->sample_rate;
 
     audio_index = ret;
-    ALOGD("audio decoder  audio_index =%d \n",audio_index);
+    ALOGD("[%s:%d]  parameter: audio_index =%d ,para.channels=%d  para.sample_rate=%d ",__func__, __LINE__,
+          audio_index, para.channels, para.sample_rate);
+
     mux.unlock();
     return para;
 }
-
-
 
 bool FFDemux::Seekto(double Position)
 {
